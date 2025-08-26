@@ -9,4 +9,3 @@ router.post('/',postProducts)
 router.put('/:id',putProducts)
 
 router.delete('/:id',deleteProducts)
-
