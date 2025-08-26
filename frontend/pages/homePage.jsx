@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 
 // A simple component for the month/year dropdowns
-const DatePicker = ({ onDateChange }) => {
-  const years = Array.from({ length: 26 }, (_, i) => 2025 - i); // From 2025 back to 2000
+const DatePicker = ({ onDateChange, currentYear, currentMonth }) => {
+  const years = Array.from({ length: 26 }, (_, i) => 2025 - i);
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
@@ -18,12 +18,12 @@ const DatePicker = ({ onDateChange }) => {
 
   return (
     <div className="date-picker-container">
-      <select className="year-dropdown" onChange={handleYearChange}>
+      <select className="year-dropdown" onChange={handleYearChange} value={currentYear}>
         {years.map(year => (
           <option key={year} value={year}>{year}</option>
         ))}
       </select>
-      <select className="month-dropdown" onChange={handleMonthChange}>
+      <select className="month-dropdown" onChange={handleMonthChange} value={currentMonth}>
         {months.map((month, index) => (
           <option key={index} value={index}>{month}</option>
         ))}
@@ -44,7 +44,7 @@ const Calendar = ({ currentMonth, currentYear }) => {
       let day = new Date(firstDayOfMonth);
       day.setDate(firstDayOfMonth.getDate() - firstDayOfMonth.getDay());
 
-      for (let i = 0; i < 6; i++) { // Generate 6 weeks to cover any month
+      for (let i = 0; i < 6; i++) {
         const week = [];
         for (let j = 0; j < 7; j++) {
           week.push(new Date(day));
@@ -58,21 +58,24 @@ const Calendar = ({ currentMonth, currentYear }) => {
     setWeeks(generateWeeks(currentYear, currentMonth));
   }, [currentMonth, currentYear]);
 
+  // Logic to scroll to the current week when the component mounts or dependencies change
   useEffect(() => {
     if (calendarRef.current) {
       const today = new Date();
       if (currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
-        const firstDayOfCurrentMonth = new Date(currentYear, currentMonth, 1);
         const weeksContainer = calendarRef.current;
-        
-        // This is a simplified scroll logic. More robust logic would be needed for a perfect calendar.
-        // It's meant to highlight the current month's start, not necessarily the current day.
-        const firstWeekIndex = Math.floor((firstDayOfCurrentMonth.getDate() - 1 + firstDayOfCurrentMonth.getDay()) / 7);
-        const weekWidth = weeksContainer.children[0]?.offsetWidth || 0;
-        weeksContainer.scrollLeft = weekWidth * firstWeekIndex;
+        const todayElement = weeksContainer.querySelector('.current-day-active');
+
+        if (todayElement) {
+          // Find the week container of the current day and scroll to it
+          const currentWeekElement = todayElement.closest('.calendar-week');
+          if (currentWeekElement) {
+            weeksContainer.scrollTop = currentWeekElement.offsetTop;
+          }
+        }
       }
     }
-  }, [currentMonth, currentYear, weeks]);
+  }, [weeks, currentMonth, currentYear]);
 
 
   return (
@@ -81,10 +84,18 @@ const Calendar = ({ currentMonth, currentYear }) => {
         <div className="calendar-week" key={weekIndex}>
           {week.map((date, dateIndex) => (
             <div 
-              className={`calendar-day ${date.getMonth() !== currentMonth ? 'other-month-day' : ''}`} 
+              className={`calendar-day ${date.getMonth() !== currentMonth ? 'other-month-day' : ''} ${date.toDateString() === new Date().toDateString() ? 'current-day-active' : ''}`} 
               key={dateIndex}
             >
-              <span className="day-number">{date.getDate()}</span>
+              <div className="day-name">
+                {date.toLocaleDateString('en-US', { weekday: 'short' })}
+              </div>
+              <div className="day-number">
+                {date.getDate()}
+              </div>
+              <div className="day-details">
+                {date.toLocaleDateString('en-US', { month: 'short' })}
+              </div>
             </div>
           ))}
         </div>
@@ -114,7 +125,7 @@ const HomePage = () => {
         <h1 className="header-title">Smart Budget Tracker</h1>
         <div className="date-controls-container">
           <span className="current-date-display">{`${new Date(currentYear, currentMonth).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`}</span>
-          <DatePicker onDateChange={handleDateChange} />
+          <DatePicker onDateChange={handleDateChange} currentYear={currentYear} currentMonth={currentMonth} />
         </div>
       </header>
       
@@ -123,7 +134,6 @@ const HomePage = () => {
           currentMonth={currentMonth} 
           currentYear={currentYear} 
         />
-        {/* Placeholder for budget-related content or more features */}
         <div className="budget-summary-container">
           <h2>Summary</h2>
           <p>This is where your budget summary and transactions will go.</p>
