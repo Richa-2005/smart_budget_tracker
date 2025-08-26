@@ -1,0 +1,62 @@
+/* HomePage.css */
+
+.homepage-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+  }
+  
+  .header-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .calendar-container {
+    /* This is the container that will hold all the weeks and enable scrolling */
+    display: flex;
+    overflow-x: auto; /* Enables horizontal scrolling */
+    -webkit-overflow-scrolling: touch; /* Improves scrolling on iOS devices */
+    width: 100%;
+  }
+  
+  .calendar-week {
+    /* Each week is a flex container */
+    display: flex;
+    /* flex-shrink: 0 prevents the week from shrinking to fit the container */
+    /* This ensures that all 7 days of the week are always visible in their "full" width */
+    flex: 0 0 auto; 
+  }
+  
+  .calendar-day {
+    /* The size and layout of each individual day box */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    /* flex-grow: 1 makes sure all 7 days in a week are the same size */
+    flex-grow: 1; 
+    flex-basis: calc(100% / 7); /* Ensures each day box takes up 1/7 of the week's width */
+    
+    /* Basic styling for the box */
+    border: 1px solid #ccc;
+    padding: 10px;
+    min-width: 100px; /* You can adjust this for the desired box size */
+    box-sizing: border-box; /* Ensures padding and border are included in the width */
+  }
+  
+  .other-month-day {
+    /* Styles for days that are not in the current month */
+    opacity: 0.5;
+  }
+  
+  .day-number {
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+  
+  /* The rest of your styles for the dropdowns, summary, etc. */
