@@ -1,3 +1,4 @@
+'''
 import google.generativeai as genai
 import json
 import os
@@ -56,6 +57,62 @@ def analyze_transaction(transaction_text: str) -> dict:
         return {"category": "Error", "merchant": "Error", "spending_type": "Error", "suggestion": "Could not analyze."}
 
 # ---Test code
+if __name__ == "__main__":
+    test_transaction = "ZARA FASHIONS MUMBAI"
+    print(f"Analyzing Transaction: '{test_transaction}'")
+    
+    analyzed_result = analyze_transaction(test_transaction)
+    
+    print("\n--- Analysis Result ---")
+    print(json.dumps(analyzed_result, indent=2)) 
+
+'''
+import cohere
+import json
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from api.env file
+load_dotenv(dotenv_path='api.env')
+
+# --- Configuration for Cohere ---
+api_key = os.getenv("COHERE_API_KEY")
+if not api_key:
+    raise ValueError("CRITICAL ERROR: COHERE_API_KEY was not found. Check your api.env file.")
+co = cohere.Client(api_key)
+
+
+# --- The "Advisor" Function using Cohere ---
+def analyze_transaction(transaction_text: str) -> dict:
+    """
+    Analyzes a transaction string using the Cohere API to categorize and provide a suggestion.
+    """
+    print(f"  > Contacting Cohere with model 'command-r'...")
+    
+    preamble = """You are a friendly and helpful financial assistant AI for a smart budget tracker app. 
+Your goal is to help users understand their spending and find ways to save money.
+Analyze the user's transaction description and return the output ONLY as a valid JSON object with four keys: "category", "merchant", "spending_type", and "suggestion".
+- "spending_type" must be one of: "Essential", "Discretionary", "Subscription", or "Income/Transfer".
+- For "Discretionary" spending, provide a friendly tip on how to save.
+- For "Essential" or "Subscription" spending, provide a neutral observation or a management tip.
+Predefined Categories: ["Food & Dining", "Transportation", "Groceries", "Shopping", "Bills & Utilities", "Health & Wellness", "Entertainment", "Transfers", "Other"]"""
+
+    try:
+        response = co.chat(
+            model='command-r',
+            preamble=preamble,
+            message=f"Please analyze this transaction: {transaction_text}"
+        )
+        
+        json_response_text = response.text.strip().replace("```json", "").replace("```", "")
+        result = json.loads(json_response_text)
+        return result
+
+    except Exception as e:
+        print(f"  > An API error occurred: {e}")
+        return {"category": "Error", "merchant": "Error", "spending_type": "Error", "suggestion": "Could not analyze."}
+
+# --- Test CODE ---
 if __name__ == "__main__":
     test_transaction = "ZARA FASHIONS MUMBAI"
     print(f"Analyzing Transaction: '{test_transaction}'")
