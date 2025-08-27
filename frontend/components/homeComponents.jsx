@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-
+import { Link } from 'react-router-dom'
 function generateYears(startYear, count) {
     const years = [];
     for (let i = 0; i < count; i++) {
@@ -69,7 +69,7 @@ export function Calendar  ({ currentMonth, currentYear })  {
     setWeeks(generateWeeks(currentYear, currentMonth));
   }, [currentMonth, currentYear]);
 
-  // Logic to scroll to the current week when the component mounts or dependencies change
+  
   useEffect(() => {
     if (calendarRef.current) {
       const today = new Date();
@@ -78,7 +78,7 @@ export function Calendar  ({ currentMonth, currentYear })  {
         const todayElement = weeksContainer.querySelector('.current-day-active');
 
         if (todayElement) {
-          // Find the week container of the current day and scroll to it
+          
           const currentWeekElement = todayElement.closest('.calendar-week');
           if (currentWeekElement) {
             weeksContainer.scrollTop = currentWeekElement.offsetTop;
@@ -88,15 +88,25 @@ export function Calendar  ({ currentMonth, currentYear })  {
     }
   }, [weeks, currentMonth, currentYear]);
 
-
+  const userId =0;
+  
   return (
     <div className="calendar-container" ref={calendarRef}>
-      {weeks.map((week, weekIndex) => (
-        <div className="calendar-week" key={weekIndex}>
-          {week.map((date, dateIndex) => (
-            <div 
-              className={`calendar-day ${date.getMonth() !== currentMonth ? 'other-month-day' : ''} ${date.toDateString() === new Date().toDateString() ? 'current-day-active' : ''}`} 
-              key={dateIndex}
+  {weeks.map((week, weekIndex) => (
+    <div className="calendar-week" key={weekIndex}>
+      {week.map((date, dateIndex) => {
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+        const day = date.getDate().toString().padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+        return (
+          <Link
+            to={`/budget/${userId}/${formattedDate}`}
+            key={dateIndex}
+          >
+            <div
+              className={`calendar-day ${date.getMonth() !== currentMonth ? 'other-month-day' : ''} 
+              ${date.toDateString() === new Date().toDateString() ? 'current-day-active' : ''}`}
             >
               <div className="day-name">
                 {date.toLocaleDateString('en-US', { weekday: 'short' })}
@@ -108,9 +118,11 @@ export function Calendar  ({ currentMonth, currentYear })  {
                 {date.toLocaleDateString('en-US', { month: 'short' })}
               </div>
             </div>
-          ))}
-        </div>
-      ))}
+          </Link>
+        );
+      })}
     </div>
+  ))}
+</div>
   );
 };

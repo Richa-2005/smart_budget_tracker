@@ -2,11 +2,12 @@ import express from 'express'
 
 const router = express.Router()
 
-router.get('/',getProducts)
 
-router.post('/',postProducts)
+router.get('/:userId/:date',getBudget)
 
-router.put('/:id',putProducts)
+router.post('/:userId/:date/post',postBudget)
 
-router.delete('/:id',deleteProducts)
+router.put('/:userId/:date/post',putBudget)
+
+router.delete('/:userId/:date/delete',deleteProducts)
 

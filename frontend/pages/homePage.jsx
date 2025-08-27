@@ -1,11 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {DatePicker, Calendar} from '/components/homeComponents.jsx'
 
-
-// A component to display and scroll the calendar days
-
-// Main component for the Home Page
-const HomePage = () => {
+export default function HomePage  (){
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
@@ -34,13 +30,8 @@ const HomePage = () => {
           currentMonth={currentMonth} 
           currentYear={currentYear} 
         />
-        <div className="budget-summary-container">
-          <h2>Summary</h2>
-          <p>This is where your budget summary and transactions will go.</p>
-        </div>
       </main>
     </div>
   );
 };
 
-export default HomePage;
