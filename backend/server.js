@@ -1,8 +1,8 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import {connectDB} from './config/db.js'
-import budgetRoutes from './routes/budget.routes.js'
-import userRoutes from './routes/user.routes.js'
+// import budgetRoutes from './routes/budget.routes.js'
+// import userRoutes from './routes/user.routes.js'
 
 const app = express()
 dotenv.config()
@@ -15,6 +15,9 @@ app.listen(PORT, ()=>{
 
 app.use(express.json())
 
-app.use('/user',userRoutes)
+// app.use('/user',userRoutes)
 
-app.use('/budget',budgetRoutes)
+// app.use('/budget',budgetRoutes)
+app.get('/',()=>{
+    console.log('hello')
+})

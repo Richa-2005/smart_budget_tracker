@@ -1,11 +1,10 @@
 import express from 'express'
 
+
 const router = express.Router()
 
-router.get('/',getProducts)
+// router.get('/',getUser)
 
-router.post('/',postProducts)
+// router.post('/post',postUser)
 
-router.put('/:id',putProducts)
-
-router.delete('/:id',deleteProducts)
+// router.delete('/deleteAccount',deleteUser)
