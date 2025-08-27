@@ -1,13 +1,11 @@
 import express from 'express'
-
+import {getBudget,postBudget,deleteBudget} from '../controllers/budget.controller.js'
 const router = express.Router()
 
+router.get('/:userId/:date',getBudget)
 
-// router.get('/:userId/:date',getBudget)
+router.post('/post/:userId/:date',postBudget)
 
-// router.post('/:userId/:date/post',postBudget)
+router.delete('/delete/:id',deleteBudget)
 
-// router.put('/:userId/:date/post',putBudget)
-
-// router.delete('/:userId/:date/delete',deleteProducts)
-
+export default router;
