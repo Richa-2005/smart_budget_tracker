@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import axios from 'axios'
 
 const ExpenditurePage = () => {
-  // Get the date from the URL parameters
+  
   const { date } = useParams();
   const [showForm, setShowForm] = useState(false);
   const [expenditure, setExpenditure] = useState({
@@ -21,11 +22,7 @@ const ExpenditurePage = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('New Expenditure:', expenditure);
-    // Here you would add the logic to save the expenditure data
-    // to a database or state manager.
-    alert('Expenditure added! Check the console for details.');
-    // Reset form
+    
     setExpenditure({
       price: '',
       description: '',

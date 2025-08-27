@@ -1,0 +1,28 @@
+{
+  "name": "smart_budget_tracker",
+  "version": "1.0.0",
+  "description": "A smart budget tracker using MERN stack and simple AIML model  thank you thank you thank you",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Richa-2005/smart_budget_tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Richa-2005/smart_budget_tracker/issues"
+  },
+  "homepage": "https://github.com/Richa-2005/smart_budget_tracker#readme",
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "mongoose": "^8.18.0",
+    "node": "^24.6.0",
+    "nodemon": "^3.1.10"
+  }
+}
