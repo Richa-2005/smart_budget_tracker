@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {DatePicker, Calender} from '/components/homeComponents.jsx'
+import {DatePicker, Calendar} from '/components/homeComponents.jsx'
 
 
 // A component to display and scroll the calendar days

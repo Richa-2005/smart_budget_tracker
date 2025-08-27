@@ -1,0 +1,27 @@
+ul{
+    background-color:black;
+    display: flex;
+    justify-content: space-evenly;
+    height: 50px;
+    padding-top: 0%;
+    align-items: center;
+}
+.nav-link{
+    text-decoration: none;
+    color: white;
+    font-size: 23px;
+}
+li{
+    list-style-type: none;
+}
+.logo{
+    background-image: url("Applogo.png");
+    background-size: 100px;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    width: 47px;
+    height: 47px;
+    border: 2px solid black;
+    border-radius: 50%;
+    padding-top: 0px;
+}
