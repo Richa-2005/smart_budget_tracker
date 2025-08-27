@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios'
 
-const ExpenditurePage = () => {
-  
+export default function DateBudget()  {
   const { date } = useParams();
   const [showForm, setShowForm] = useState(false);
   const [expenditure, setExpenditure] = useState({
@@ -11,6 +10,10 @@ const ExpenditurePage = () => {
     description: '',
     category: 'Necessity'
   });
+  const [expendituresList, setExpendituresList] = useState([]); 
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -30,6 +33,25 @@ const ExpenditurePage = () => {
     });
     setShowForm(false);
   };
+  const userId ="68aefcc8b89931fdda551904"
+
+  useEffect(() => {
+    const fetchExpenditures = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/budget/${userId}/${date}`);
+        // Use the new state setter for the list
+        setExpendituresList(response.data);
+        setError(null);
+      } catch (err) {
+        setError('Failed to fetch expenditures.');
+        setExpendituresList([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchExpenditures();
+  }, [date]);
 
   return (
     <div className="expenditure-page-container">
@@ -91,13 +113,23 @@ const ExpenditurePage = () => {
         </form>
       )}
 
-      {/* This section will eventually display a list of expenditures for the date */}
       <div className="expenditure-list">
-        <h2>Expenditures for this date</h2>
-        <p>No expenditures added yet.</p>
+      <h2>Expenditures for this date</h2>
+      {loading && <p>Loading expenditures...</p>}
+      {error && <p className="error-message">{error}</p>}
+      {!loading && expenditure.length === 0 && <p>No expenditures added yet for this date.</p>}
+
+      <ul>
+      
+      {expendituresList.map(item => (
+        <li key={item._id} className="expenditure-item">
+          <span className="expenditure-price">{item.price}</span>
+          <span className="expenditure-description">{item.description}</span>
+          <span className="expenditure-category">({item.category})</span>
+        </li>
+      ))}
+    </ul>
       </div>
     </div>
   );
 };
-
-export default ExpenditurePage;
