@@ -12,18 +12,18 @@ export default function NavBar() {
 
         </div>
 
-        <div className="nav-links">
-          <button className="nav-item">
+        <ul className="nav-links">
+          <li className="nav-item">
             <Link to="/" className="nav-link">Home</Link> 
-          </button> <br />
-          <button className="nav-item">
+          </li> <br />
+          <li className="nav-item">
             <Link to="/activity" className="nav-link">Activity</Link>
-          </button> <br />
-          <button className="nav-item">
+          </li> <br />
+          <li className="nav-item">
             <Link to="/account" className="nav-link">Account</Link>
-          </button> <br />
+          </li> <br />
 
-        </div>
+        </ul>
       </div>
     </nav>
   )
