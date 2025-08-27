@@ -1,4 +1,4 @@
-import Budget from '../models/Budget.js'; 
+import Budget from '../model/budget.model.js'; 
 import mongoose from 'mongoose'; 
 
 export const getBudget = async (req, res) => {

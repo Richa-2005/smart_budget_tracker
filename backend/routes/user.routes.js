@@ -1,8 +1,8 @@
 import express from 'express'
-import { getUser,registerUser,deleteUser } from '../controllers/user.contollers'
+import { getUser,registerUser,deleteUser } from '../controllers/user.contollers.js';
 const router = express.Router()
 
-router.get('/',getUser)
+router.get('/:username',getUser)
 
 router.post('/post',registerUser)
 

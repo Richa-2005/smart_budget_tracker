@@ -22,9 +22,27 @@ export default function DateBudget()  {
       [name]: value
     }));
   };
-
-  const handleSubmit = (event) => {
+ const userId ="68aefcc8b89931fdda551904"
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
+    const postData = {
+      price: expenditure.price,
+      description: expenditure.description,
+      need: expenditure.category
+    };
+
+    try {
+      const response = await axios.post(`http://localhost:5000/budget/post/${userId}/${date}`, postData);
+      
+      setExpendituresList(prevList => [...prevList, response.data.data]);
+
+      alert('Expenditure added successfully!');
+
+    } catch (err) {
+      console.error('Error adding expenditure:', err.response?.data || err.message);
+      alert('Failed to add expenditure.');
+    }
     
     setExpenditure({
       price: '',
@@ -33,13 +51,12 @@ export default function DateBudget()  {
     });
     setShowForm(false);
   };
-  const userId ="68aefcc8b89931fdda551904"
+ 
 
   useEffect(() => {
     const fetchExpenditures = async () => {
       try {
         const response = await axios.get(`http://localhost:3000/budget/${userId}/${date}`);
-        // Use the new state setter for the list
         setExpendituresList(response.data);
         setError(null);
       } catch (err) {
@@ -52,6 +69,7 @@ export default function DateBudget()  {
 
     fetchExpenditures();
   }, [date]);
+  
 
   return (
     <div className="expenditure-page-container">
@@ -110,6 +128,7 @@ export default function DateBudget()  {
           </div>
           
           <button type="submit" className="submit-btn">Save Expenditure</button>
+          
         </form>
       )}
 

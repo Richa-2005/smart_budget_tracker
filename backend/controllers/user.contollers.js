@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import User from '../model/user.model.js'
-import bcrypt from 'bcryptjs';
+
 //Getting userId , password using username.
 export const getUser= async(req,res) => {
     try {
