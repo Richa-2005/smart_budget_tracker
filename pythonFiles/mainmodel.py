@@ -3,11 +3,11 @@ import json
 import os
 from dotenv import load_dotenv
 
-# This line loads the variables from your api.env file
+
 load_dotenv(dotenv_path='api.env')
 
 # --- Configuration ---
-# This will now automatically find the key in your .env file
+
 api_key = os.getenv("GEMINI_API_KEY")
 if not api_key:
     raise ValueError("CRITICAL ERROR: GEMINI_API_KEY was not found. Check your api.env file.")
@@ -20,7 +20,7 @@ def analyze_transaction(transaction_text: str) -> dict:
     Analyzes a transaction string to categorize it and provide a spending suggestion.
     """
     print(f"  > Contacting Google AI with model 'gemini-pro'...")
-   # This is the corrected line
+
     model = genai.GenerativeModel('gemini-pro')
     
  
@@ -55,7 +55,7 @@ def analyze_transaction(transaction_text: str) -> dict:
         print(f"  > An API error occurred: {e}")
         return {"category": "Error", "merchant": "Error", "spending_type": "Error", "suggestion": "Could not analyze."}
 
-# --- Let's Test It! ---
+# ---Test code
 if __name__ == "__main__":
     test_transaction = "ZARA FASHIONS MUMBAI"
     print(f"Analyzing Transaction: '{test_transaction}'")
