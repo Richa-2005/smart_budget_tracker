@@ -95,6 +95,46 @@ body {
   overflow: hidden;
 }
 
+
+/* 📱 Tablet screens (≤ 1024px) → 5 columns */
+@media (max-width: 1024px) {
+  .calendar-day {
+    flex: 1 1 calc(20% - 12px);
+    max-width: calc(20% - 12px);
+    min-height: 90px;
+  }
+}
+
+/* 📱 Large phones (≤ 768px) → 3 columns */
+@media (max-width: 768px) {
+  .calendar-day {
+    flex: 1 1 calc(33.33% - 12px);
+    max-width: calc(33.33% - 12px);
+    min-height: 80px;
+  }
+  .day-number {
+    font-size: 1.5em;
+  }
+  .day-name {
+    font-size: 0.7em;
+  }
+}
+
+/* 📱 Small phones (≤ 480px) → 2 columns */
+@media (max-width: 480px) {
+  .calendar-day {
+    flex: 1 1 calc(50% - 12px);
+    max-width: calc(50% - 12px);
+    min-height: 70px;
+  }
+  .day-number {
+    font-size: 1.3em;
+  }
+  .day-name, .day-details {
+    font-size: 0.65em;
+  }
+}
+
 .calendar-day:hover {
   transform: translateY(-6px) scale(1.05);
   background: linear-gradient(160deg, rgb(228, 228, 248), rgb(249, 235, 237),rgb(212, 238, 212));
