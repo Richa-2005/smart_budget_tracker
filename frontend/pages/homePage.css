@@ -1,70 +1,162 @@
-/* HomePage.css */
-
+body {
+  background: linear-gradient(135deg, rgb(228, 228, 248), rgb(249, 235, 237),rgb(212, 238, 212));
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  color: #1a1a1a;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
 .homepage-container {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Set a height for the homepage container */
-  overflow: hidden; /* Hide overflow to make sure only the content area scrolls */
+  min-height: 100vh;
+  background: transparent;
 }
-
 .header-container {
-  width: 100%;
+  width: 96%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  flex-shrink: 0; /* Prevents header from shrinking */
+  padding: 1.5rem 2rem;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 0 0 20px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.header-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  letter-spacing: 0.6px;
+  color: #222;
+  text-shadow: 0px 2px 8px rgba(173, 216, 255, 0.6);
+  transition: all 0.4s ease;
 }
 
+.header-title:hover {
+  transform: translateY(-3px) scale(1.05);
+  color: #4b5473;
+  text-shadow: 0px 4px 12px rgba(106, 141, 255, 0.8);
+}
 .main-content {
-  flex-grow: 1; /* Allows this section to fill available space */
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  padding: 2rem;
+}
+.calendar-container {
+  flex-grow: 1;
+  border: none;
+  border-radius: 20px;
+  background: rgb(4, 4, 4);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  overflow-y: auto;
+  transition: all 0.4s ease;
+  animation: float 6s ease-in-out infinite alternate;
 }
 
-.calendar-container {
-  /* This is the key change for vertical scroll */
-  overflow-y: scroll; /* Enables vertical scrolling */
-  -webkit-overflow-scrolling: touch;
-  height: 100%;
-  border: 1px solid #ccc; /* Just for visualization */
+@keyframes float {
+  from { transform: translateY(0px); }
+  to { transform: translateY(8px); }
 }
 
 .calendar-week {
   display: flex;
-  width: 100%;
-  flex-shrink: 0; /* Prevents the week from shrinking */
-  /* This makes the whole week visible at once horizontally */
-  min-height: 150px; /* Adjust this to control the height of each week row */
+  flex-shrink: 0;
+  min-height: 140px;
+  margin-bottom: 1rem;
 }
-
 .calendar-day {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   flex-grow: 1;
-  flex-basis: calc(100% / 7); /* Ensures 7 boxes fit perfectly in the row */
-  border: 1px solid #ddd;
-  padding: 10px;
-  box-sizing: border-box;
+  flex-basis: calc(100% / 7);
+  width: 110px;
+  height: 120px;
+  margin: 19px;
+  border-radius: 16px;
+  padding: 20px;
+  background: linear-gradient(145deg, #ffffff, #f3f7ff);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 6px 20px rgba(140, 180, 255, 0.15);
+  transition: all 0.4s ease;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.calendar-day:hover {
+  transform: translateY(-6px) scale(1.05);
+  background: linear-gradient(160deg, rgb(228, 228, 248), rgb(249, 235, 237),rgb(212, 238, 212));
+  box-shadow: 0 16px 40px rgba(100, 150, 255, 0.25);
+}
+.calendar-day::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: radial-gradient(circle at top left, rgba(173, 216, 255, 0.3), transparent 60%),
+              radial-gradient(circle at bottom right, rgba(255, 182, 255, 0.3), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.calendar-day:hover::after {
+  opacity: 1;
 }
 
 .other-month-day {
   opacity: 0.5;
+  background: rgba(245, 245, 245, 0.6);
 }
-
 .current-day-active {
-  background-color: #e6f7ff; /* Highlight for the current day */
-  border: 2px solid #007bff;
+  background: linear-gradient(135deg, #d1e5f9, #f0f8ff);
+  border: 2px solid #6a8dff;
+  box-shadow: 0 0 20px rgba(106, 141, 255, 0.6), 0 8px 28px rgba(106, 141, 255, 0.3);
+  transform: scale(1.08);
+  animation: pulseGlow 3s infinite alternate;
 }
-
-.day-name { font-weight: bold; }
-.day-number { font-size: 1.5em; font-weight: bold; }
-.day-details { font-size: 0.8em; color: #888; }
-
-.budget-summary-container {
-  padding: 20px;
-  flex-shrink: 0; /* Prevents summary from shrinking */
+@keyframes pulseGlow {
+  from { box-shadow: 0 0 20px rgba(106, 141, 255, 0.5), 0 8px 20px rgba(106, 141, 255, 0.2); }
+  to { box-shadow: 0 0 35px rgba(106, 141, 255, 0.8), 0 10px 30px rgba(106, 141, 255, 0.3); }
+}
+.day-name { 
+  font-weight: 600; 
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.8em;
+}
+.day-number { 
+  font-size: 2em;
+  font-weight: 700;
+  color: #222;
+  margin-top: 6px;
+  text-shadow: 0px 2px 8px rgba(180, 200, 255, 0.4);
+}
+.day-details { 
+  font-size: 0.75em; 
+  color: #777;
+  margin-top: 4px;
+}
+/*.budget-summary-container {
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.65);
+  border-radius: 18px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  margin-top: 2rem;
+  animation: float 7s ease-in-out infinite alternate-reverse;}*/
+.day{
+  text-decoration: none;
 }

@@ -1,19 +1,25 @@
+
+.navbar-container{
+    margin-top: 0px;
+}
 ul{
-    background-color:black;
+    margin: 0px;
+    background-color:#222;
     display: flex;
     justify-content: space-evenly;
     height: 50px;
-    padding-top: 0%;
     align-items: center;
 }
 .nav-link{
     text-decoration: none;
+    z-index: 1;
     color: white;
     font-size: 23px;
 }
 li{
     list-style-type: none;
 }
+
 .logo{
     background-image: url("Applogo.png");
     background-size: 100px;
@@ -25,3 +31,4 @@ li{
     border-radius: 50%;
     padding-top: 0px;
 }
+

@@ -18,7 +18,7 @@ export default function HomePage  (){
   return (
     <div className="homepage-container">
       <header className="header-container">
-        <h1 className="header-title">Smart Budget Tracker</h1>
+        <h1 className="header-title">Know where every penny goes, your financial dashboard</h1>
         <div className="date-controls-container">
           <span className="current-date-display">{`${new Date(currentYear, currentMonth).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`}</span>
           <DatePicker onDateChange={handleDateChange} currentYear={currentYear} currentMonth={currentMonth} />

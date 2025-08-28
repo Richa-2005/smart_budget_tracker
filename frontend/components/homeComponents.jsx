@@ -103,6 +103,7 @@ export function Calendar  ({ currentMonth, currentYear })  {
           <Link
             to={`/budget/${userId}/${formattedDate}`}
             key={dateIndex}
+            className="day"
           >
             <div
               className={`calendar-day ${date.getMonth() !== currentMonth ? 'other-month-day' : ''} 

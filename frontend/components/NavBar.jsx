@@ -8,7 +8,7 @@ export default function NavBar() {
       <div className="navbar-container">
 
         <ul className="nav-links">
-            <li className="logo"></li> <br />
+        <li className="logo"></li> <br />
           <li className="nav-item">
             <Link to="/" className="nav-link">Home</Link> 
           </li> <br />
@@ -18,7 +18,6 @@ export default function NavBar() {
           <li className="nav-item">
             <Link to="/account" className="nav-link">Account</Link>
           </li> <br />
-
         </ul>
       </div>
     </nav>
