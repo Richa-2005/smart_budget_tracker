@@ -6,6 +6,6 @@ router.get('/:userId/:date',getBudget)
 
 router.post('/post/:userId/:date',postBudget)
 
-router.delete('/delete/:id',deleteBudget)
+router.delete('/delete',deleteBudget)
 
 export default router;

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {DatePicker, Calendar} from '/components/homeComponents.jsx'
-
+import './homePage.css'
 export default function HomePage  (){
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());

@@ -51,6 +51,25 @@ export default function DateBudget()  {
     });
     setShowForm(false);
   };
+  const handleDelete = async (expenditureId) => {
+    const isConfirmed = window.confirm("Are you sure you want to delete this expenditure?");
+    if (!isConfirmed) {
+      return; 
+    }
+    try {
+      await axios.delete(`http://localhost:5500/budget/delete`, {
+        data: { _id: expenditureId }  
+      });
+
+      setExpendituresList(prevList => prevList.filter(item => item._id !== expenditureId));
+
+      alert('Expenditure deleted successfully!');
+
+    } catch (err) {
+      console.error('Error deleting expenditure:', err.response?.data || err.message);
+      alert('Failed to delete expenditure.');
+    }
+  };
  
 
   useEffect(() => {
@@ -60,16 +79,22 @@ export default function DateBudget()  {
         setExpendituresList(response.data);
         setError(null);
       } catch (err) {
-        setError('Failed to fetch expenditures.');
-        setExpendituresList([]);
+       
+        if (err.response && err.response.status === 404) {
+          setError(err.response.data.message); 
+          setExpendituresList([]); 
+        } else {
+          setError('Failed to fetch expenditures. Please try again later.');
+          setExpendituresList([]);
+        }
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchExpenditures();
   }, [date]);
-  
+
 
   return (
     <div className="expenditure-page-container">
@@ -145,6 +170,12 @@ export default function DateBudget()  {
           <span className="expenditure-price">{item.price}</span>
           <span className="expenditure-description">{item.description}</span>
           <span className="expenditure-category">({item.need})</span>
+          <button 
+            className="delete-btn" 
+            onClick={() => handleDelete(item._id)}
+          >
+            Delete
+          </button>
         </li>
       ))}
     </ul>
