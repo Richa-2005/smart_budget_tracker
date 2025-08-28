@@ -18,7 +18,7 @@ const budgetSchema = mongoose.Schema({
       need: {
         type: String,
         required: true,
-        enum: ['low', 'medium', 'high'], 
+         
       },
       date: {
         type: Date,

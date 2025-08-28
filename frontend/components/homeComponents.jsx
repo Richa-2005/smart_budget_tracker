@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom'
+
 function generateYears(startYear, count) {
     const years = [];
     for (let i = 0; i < count; i++) {
