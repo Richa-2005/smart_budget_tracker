@@ -73,7 +73,7 @@ export const deleteBudget = async (req, res) => {
     const deletedBudget = await Budget.findByIdAndDelete(_id);
 
     if (!deletedBudget) {
-      return res.status(404).json({ message: 'Expenditure not found.' });
+      return res.status(200).json({ message: 'Expenditure not found.' });
     }
 
     res.status(200).json({
