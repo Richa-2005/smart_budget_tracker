@@ -8,7 +8,7 @@ export default function DateBudget()  {
   const [expenditure, setExpenditure] = useState({
     price: '',
     description: '',
-    category: 'Necessity'
+    need: 'Necessity'
   });
   const [expendituresList, setExpendituresList] = useState([]); 
 
@@ -29,11 +29,11 @@ export default function DateBudget()  {
     const postData = {
       price: expenditure.price,
       description: expenditure.description,
-      need: expenditure.category
+      need: expenditure.need
     };
 
     try {
-      const response = await axios.post(`http://localhost:5000/budget/post/${userId}/${date}`, postData);
+      const response = await axios.post(`http://localhost:5500/budget/post/${userId}/${date}`, postData);
       
       setExpendituresList(prevList => [...prevList, response.data.data]);
 
@@ -47,7 +47,7 @@ export default function DateBudget()  {
     setExpenditure({
       price: '',
       description: '',
-      category: 'Necessity'
+      need: 'Necessity'
     });
     setShowForm(false);
   };
@@ -56,7 +56,7 @@ export default function DateBudget()  {
   useEffect(() => {
     const fetchExpenditures = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/budget/${userId}/${date}`);
+        const response = await axios.get(`http://localhost:5500/budget/${userId}/${date}`);
         setExpendituresList(response.data);
         setError(null);
       } catch (err) {
@@ -115,11 +115,11 @@ export default function DateBudget()  {
           </div>
           
           <div className="form-group">
-            <label htmlFor="category">Category</label>
+            <label htmlFor="need">Need</label>
             <select 
-              id="category" 
-              name="category"
-              value={expenditure.category}
+              id="need" 
+              name="need"
+              value={expenditure.need}
               onChange={handleInputChange}
             >
               <option value="Necessity">Necessity</option>
@@ -144,7 +144,7 @@ export default function DateBudget()  {
         <li key={item._id} className="expenditure-item">
           <span className="expenditure-price">{item.price}</span>
           <span className="expenditure-description">{item.description}</span>
-          <span className="expenditure-category">({item.category})</span>
+          <span className="expenditure-category">({item.need})</span>
         </li>
       ))}
     </ul>
