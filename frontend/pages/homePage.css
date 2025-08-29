@@ -1,5 +1,5 @@
 body {
-  background: linear-gradient(135deg, rgb(228, 228, 248), rgb(249, 235, 237),rgb(212, 238, 212));
+  background: linear-gradient(135deg,white);
   font-family: 'Segoe UI', 'Roboto', sans-serif;
   color: #1a1a1a;
   margin: 0;
@@ -95,8 +95,6 @@ body {
   overflow: hidden;
 }
 
-
-/* 📱 Tablet screens (≤ 1024px) → 5 columns */
 @media (max-width: 1024px) {
   .calendar-day {
     flex: 1 1 calc(20% - 12px);
@@ -105,7 +103,6 @@ body {
   }
 }
 
-/* 📱 Large phones (≤ 768px) → 3 columns */
 @media (max-width: 768px) {
   .calendar-day {
     flex: 1 1 calc(33.33% - 12px);
@@ -120,7 +117,6 @@ body {
   }
 }
 
-/* 📱 Small phones (≤ 480px) → 2 columns */
 @media (max-width: 480px) {
   .calendar-day {
     flex: 1 1 calc(50% - 12px);
