@@ -1,0 +1,339 @@
+.auth-page {
+  min-height: 100vh;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-layout {
+  width: 100%;
+  max-width: 1240px;
+  min-height: 78vh;
+  display: grid;
+  grid-template-columns: 1.08fr 0.92fr;
+  overflow: hidden;
+}
+
+.auth-left {
+  position: relative;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.08), transparent 30%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.28), rgba(241, 245, 249, 0.65));
+  border-right: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.auth-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.auth-badge {
+  width: fit-content;
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.06);
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 0.88rem;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+.auth-heading {
+  font-size: 3rem;
+  line-height: 1.04;
+  margin: 0;
+  letter-spacing: -0.04em;
+  max-width: 540px;
+}
+
+.auth-description {
+  max-width: 560px;
+  color: var(--text-secondary);
+  font-size: 1.02rem;
+  line-height: 1.85;
+  margin: 0;
+}
+
+.auth-feature-list {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.auth-feature-item {
+  padding: 1.05rem 1.15rem;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.58);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+}
+
+.auth-feature-title {
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+  color: var(--text-primary);
+}
+
+.auth-feature-text {
+  color: var(--text-secondary);
+  line-height: 1.65;
+  font-size: 0.95rem;
+}
+
+.auth-right {
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.28), rgba(248,250,252,0.45));
+}
+
+.auth-form-card {
+  width: 100%;
+  max-width: 430px;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 28px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.1);
+}
+
+.auth-form-top {
+  margin-bottom: 1.4rem;
+}
+
+.auth-form-title {
+  margin: 0 0 0.45rem;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.auth-form-subtitle {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.auth-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+  margin: 1.5rem 0;
+  background: #f1f5f9;
+  padding: 0.45rem;
+  border-radius: 16px;
+}
+
+.auth-toggle-btn {
+  border: none;
+  cursor: pointer;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 700;
+  transition: var(--transition);
+}
+
+.auth-toggle-btn.active {
+  background: linear-gradient(135deg, #0f172a, #2563eb);
+  color: white;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.auth-form-footer {
+  margin-top: 1rem;
+  color: var(--text-muted);
+  font-size: 0.94rem;
+  text-align: center;
+  line-height: 1.7;
+}
+
+.auth-mini-note {
+  margin-top: 1rem;
+  padding: 0.95rem 1rem;
+  border-radius: 16px;
+  background: #f8fafc;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  color: var(--text-secondary);
+  font-size: 0.94rem;
+  line-height: 1.6;
+}
+
+.account-dashboard {
+  max-width: 960px;
+  margin: 0 auto;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.account-header-card,
+.account-budget-card {
+  padding: 1.8rem;
+}
+
+.account-user-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.account-user-meta h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.8rem;
+  letter-spacing: -0.02em;
+}
+
+.account-user-meta p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.account-budget-form {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+  max-width: 420px;
+}
+
+.account-budget-actions {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 960px) {
+  .auth-layout {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .auth-left {
+    padding: 2rem;
+  }
+
+  .auth-right {
+    padding: 1rem;
+  }
+
+  .auth-heading {
+    font-size: 2.2rem;
+  }
+}
+
+.account-top-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 1.5rem;
+}
+
+.account-profile-card,
+.account-stats-card,
+.account-budget-card {
+  padding: 1.8rem;
+}
+
+.account-profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.account-avatar {
+  width: 68px;
+  height: 68px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0f172a, #2563eb);
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 800;
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.18);
+  flex-shrink: 0;
+}
+
+.account-profile-meta h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.7rem;
+  letter-spacing: -0.02em;
+}
+
+.account-profile-meta p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.account-profile-subtext {
+  margin-top: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+.account-stats-grid {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.account-mini-stat {
+  padding: 1rem;
+  border-radius: 18px;
+  background: rgba(248, 250, 252, 0.95);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.account-mini-stat-label {
+  margin: 0 0 0.35rem;
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.account-mini-stat-value {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.account-section-head {
+  margin-bottom: 1rem;
+}
+
+.account-section-head h2 {
+  margin: 0 0 0.45rem;
+  font-size: 1.55rem;
+  letter-spacing: -0.02em;
+}
+
+.account-section-head p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+@media (max-width: 960px) {
+  .account-top-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,31 +1,33 @@
-
-import express from 'express'
-import dotenv from 'dotenv'
-import {connectDB} from './config/db.js'
+import express from 'express';
+import dotenv from 'dotenv';
 import cors from 'cors';
-import budgetRoutes from './routes/budget.routes.js'
-import userRoutes from './routes/user.routes.js'
+import { connectDB } from './config/db.js';
 
+import budgetRoutes from './routes/budget.routes.js';
+import userRoutes from './routes/user.routes.js';
+import budgetGoalRoutes from './routes/budgetGoal.routes.js';
+import dashboardRoutes from './routes/dashboard.routes.js';
 
-const app = express()
-dotenv.config()
+dotenv.config();
 
-app.use(express.json())
+const app = express();
+
+app.use(express.json());
 app.use(cors());
 
-app.use('/budget',budgetRoutes)
-app.use('/user',userRoutes)
+app.use('/budget', budgetRoutes);
+app.use('/user', userRoutes);
+app.use('/budget-goal', budgetGoalRoutes);
+app.use('/dashboard', dashboardRoutes);
 
+app.get('/', (req, res) => {
+  res.send('Hello from the root route!');
+});
 
+const PORT = process.env.PORT || 5500;
 
-app.get('/',(req, res)=>{
-    console.log('hello')
-    res.send('Hello from the root route!');
-})
+connectDB();
 
-const PORT = 5500
-connectDB() // Connect to the database here
-
-app.listen(PORT, ()=>{
-    console.log(`Server started listening at port ${PORT} : http://localhost:${PORT}/`)
-})
+app.listen(PORT, () => {
+  console.log(`Server started listening at port ${PORT} : http://localhost:${PORT}/`);
+});

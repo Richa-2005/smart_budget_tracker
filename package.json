@@ -20,9 +20,11 @@
   },
   "homepage": "https://github.com/Richa-2005/smart_budget_tracker#readme",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "dotenv": "^17.3.1",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.3",
     "mongoose": "^8.18.0",
     "node": "^24.6.0",
     "nodemon": "^3.1.10"

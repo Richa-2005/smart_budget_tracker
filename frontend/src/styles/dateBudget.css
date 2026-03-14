@@ -1,0 +1,195 @@
+.date-budget-page {
+  max-width: 1220px;
+  margin: 0 auto;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.date-budget-top {
+  padding: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.date-budget-badge {
+  display: inline-flex;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--accent-primary);
+  font-weight: 700;
+  font-size: 0.88rem;
+  margin-bottom: 0.8rem;
+}
+
+.date-budget-title {
+  margin: 0;
+  font-size: 2rem;
+  letter-spacing: -0.03em;
+}
+
+.date-budget-subtitle {
+  margin: 0.45rem 0 0;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.date-budget-total-card {
+  min-width: 220px;
+  padding: 1rem 1.2rem;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #0f172a, #2563eb);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  box-shadow: 0 16px 32px rgba(37, 99, 235, 0.18);
+}
+
+.date-budget-total-label {
+  font-size: 0.92rem;
+  opacity: 0.85;
+}
+
+.date-budget-total-value {
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.date-budget-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 1.5rem;
+}
+
+.date-budget-form-panel,
+.date-budget-list-panel {
+  padding: 1.5rem;
+}
+
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.panel-head h2 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.panel-head p {
+  margin: 0.35rem 0 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.date-budget-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.empty-form-state,
+.list-message {
+  padding: 1rem;
+  border-radius: 16px;
+  background: #f8fafc;
+  border: 1px dashed rgba(148, 163, 184, 0.28);
+  color: var(--text-secondary);
+}
+
+.expense-list {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.expense-item-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 1rem;
+  border-radius: 18px;
+  background: rgba(248, 250, 252, 0.95);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.expense-main {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.expense-price {
+  min-width: 84px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.expense-details h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.expense-tag {
+  display: inline-flex;
+  padding: 0.32rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.tag-necessity {
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
+}
+
+.tag-misc {
+  background: rgba(245, 158, 11, 0.12);
+  color: #d97706;
+}
+
+.delete-expense-btn {
+  border: none;
+  cursor: pointer;
+  padding: 0.72rem 0.95rem;
+  border-radius: 12px;
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
+  font-weight: 700;
+  transition: var(--transition);
+}
+
+.delete-expense-btn:hover {
+  background: rgba(239, 68, 68, 0.16);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 960px) {
+  .date-budget-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .date-budget-top {
+    align-items: flex-start;
+  }
+
+  .expense-item-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .expense-main {
+    width: 100%;
+  }
+}
