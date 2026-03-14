@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A smart budget tracker using MERN stack and simple AIML model  thank you thank you thank you",
   "main": "index.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon backend/server.js"
@@ -21,7 +21,7 @@
   "homepage": "https://github.com/Richa-2005/smart_budget_tracker#readme",
   "dependencies": {
     "cors": "^2.8.5",
-    "dotenv": "^17.2.1",
+    "dotenv": "^17.3.1",
     "express": "^5.1.0",
     "mongoose": "^8.18.0",
     "node": "^24.6.0",
