@@ -1,0 +1,35 @@
+.Toastify__toast {
+  border-radius: 16px;
+  font-family: inherit;
+  padding: 14px 16px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+}
+
+.Toastify__toast--success {
+  background: linear-gradient(135deg,#10b981,#059669);
+  color: white;
+}
+
+.Toastify__toast--error {
+  background: linear-gradient(135deg,#ef4444,#dc2626);
+  color: white;
+}
+
+.Toastify__toast--info {
+  background: linear-gradient(135deg,#2563eb,#1d4ed8);
+  color: white;
+}
+
+.Toastify__toast--warning {
+  background: linear-gradient(135deg,#f59e0b,#d97706);
+  color: white;
+}
+
+.Toastify__progress-bar {
+  height: 4px;
+}
+
+.Toastify__close-button {
+  color: white;
+  opacity: 0.9;
+}
