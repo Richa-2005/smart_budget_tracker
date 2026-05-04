@@ -28,6 +28,9 @@ export default function Activity() {
   const [monthlyTrend, setMonthlyTrend] = useState([]);
   const [recentExpenses, setRecentExpenses] = useState([]);
   const [insights, setInsights] = useState(null);
+  const [categorySummary, setCategorySummary] = useState([]);
+  const [riskData, setRiskData] = useState(null);
+  const [aiRecommendations, setAiRecommendations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -45,12 +48,18 @@ export default function Activity() {
           monthlyRes,
           recentRes,
           insightsRes,
+          categoryRes,
+          riskRes,
+          recommendationsRes,
         ] = await Promise.all([
           axios.get('/dashboard/summary'),
           axios.get('/dashboard/weekly-trend'),
           axios.get('/dashboard/monthly-trend'),
           axios.get('/dashboard/recent-expenses'),
           axios.get('/dashboard/insights'),
+          axios.get('/dashboard/category-summary'),
+          axios.get('/dashboard/risk'),
+          axios.get('/dashboard/recommendations'),
         ]);
 
         setSummary(summaryRes.data);
@@ -58,6 +67,9 @@ export default function Activity() {
         setMonthlyTrend(monthlyRes.data);
         setRecentExpenses(recentRes.data);
         setInsights(insightsRes.data);
+        setCategorySummary(categoryRes.data);
+        setRiskData(riskRes.data);
+        setAiRecommendations(recommendationsRes.data);
         setError('');
       } catch (err) {
         console.error(err.response?.data || err.message);
@@ -288,6 +300,30 @@ export default function Activity() {
           </div>
         </div>
 
+        <div className="activity-panel soft-card" style={{ marginBottom: '24px' }}>
+          <div className="panel-title-row">
+            <div>
+              <h2 className="panel-title">Spending by Category</h2>
+              <p className="panel-subtitle">
+                AI-predicted categories of your current month expenses.
+              </p>
+            </div>
+          </div>
+
+          <div className="chart-wrap" style={{ height: '350px' }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={categorySummary}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                <XAxis dataKey="category" stroke="#64748b" />
+                <YAxis stroke="#64748b" />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="total" fill="#0ea5e9" radius={[8, 8, 0, 0]} name="Total Spent" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
         <div className="activity-grid-2">
           <div className="activity-panel soft-card">
             <div className="panel-title-row">
@@ -343,6 +379,71 @@ export default function Activity() {
               </ul>
             ) : (
               <div className="panel-empty">No recommendations available.</div>
+            )}
+          </div>
+        </div>
+
+        <div className="activity-grid-2">
+          <div className="activity-panel soft-card">
+            <div className="panel-title-row">
+              <div>
+                <h2 className="panel-title">Spending Risk</h2>
+                <p className="panel-subtitle">AI-predicted likelihood of exceeding budget.</p>
+              </div>
+            </div>
+            {riskData ? (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px' }}>
+                <div style={{ 
+                  fontSize: '24px', 
+                  fontWeight: 'bold', 
+                  padding: '10px 20px', 
+                  borderRadius: '8px',
+                  color: riskData.riskLevel === 'low' ? '#166534' : riskData.riskLevel === 'medium' ? '#9a3412' : '#991b1b',
+                  backgroundColor: riskData.riskLevel === 'low' ? '#dcfce7' : riskData.riskLevel === 'medium' ? '#ffedd5' : '#fee2e2',
+                  marginBottom: '15px'
+                }}>
+                  {riskData.riskLevel.toUpperCase()} RISK
+                </div>
+                {riskData.reason && (
+                  <p style={{ textAlign: 'center', fontSize: '15px', color: '#334155', fontStyle: 'italic', marginBottom: '8px' }}>
+                    "{riskData.reason}"
+                  </p>
+                )}
+                <p style={{ marginTop: '10px', color: '#64748b' }}>
+                  Confidence: {(riskData.confidence * 100).toFixed(0)}%
+                </p>
+              </div>
+            ) : (
+              <div className="panel-empty">No risk data available.</div>
+            )}
+          </div>
+
+          <div className="activity-panel soft-card">
+            <div className="panel-title-row">
+              <div>
+                <h2 className="panel-title">AI Recommendations</h2>
+                <p className="panel-subtitle">Personalized suggestions based on spending patterns.</p>
+              </div>
+            </div>
+            {aiRecommendations?.length > 0 ? (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '15px' }}>
+                {aiRecommendations.map((item, index) => (
+                  <div key={index} style={{
+                    padding: '12px 16px',
+                    borderRadius: '8px',
+                    borderLeft: `4px solid ${item.type === 'warning' ? '#ef4444' : item.type === 'tip' ? '#eab308' : '#3b82f6'}`,
+                    backgroundColor: item.type === 'warning' ? '#fef2f2' : item.type === 'tip' ? '#fefce8' : '#eff6ff',
+                    color: '#334155',
+                    fontSize: '14px',
+                    lineHeight: '1.5'
+                  }}>
+                    <strong style={{ textTransform: 'capitalize', color: item.type === 'warning' ? '#991b1b' : item.type === 'tip' ? '#854d0e' : '#1e40af' }}>{item.type}: </strong>
+                    {item.message}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="panel-empty">No AI recommendations available yet.</div>
             )}
           </div>
         </div>
