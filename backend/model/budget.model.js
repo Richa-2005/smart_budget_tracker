@@ -17,6 +17,22 @@ const budgetSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    category: {
+      type: String,
+      default: "Uncategorized",
+    },
+    mlPredicted: {
+      type: Boolean,
+      default: false,
+    },
+    categoryConfidence: {
+      type: Number,
+      default: 0,
+    },
+    needConfidence: {
+      type: Number,
+      default: 0,
+    },
     need: {
       type: String,
       required: true,

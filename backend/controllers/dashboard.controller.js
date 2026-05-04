@@ -1,5 +1,6 @@
 import Budget from '../model/budget.model.js';
 import BudgetGoal from '../model/budgetGoal.model.js';
+import axios from 'axios';
 
 export const getDashboardSummary = async (req, res) => {
   try {
@@ -294,6 +295,195 @@ export const getCalendarTotals = async (req, res) => {
     }));
 
     res.status(200).json(result);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  }
+};
+
+export const getCategorySummary = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+    const expenses = await Budget.find({
+      userId,
+      date: { $gte: startOfMonth, $lte: now },
+    });
+
+    const categoryMap = {};
+
+    expenses.forEach((item) => {
+      const cat = item.category || 'Uncategorized';
+      if (!categoryMap[cat]) {
+        categoryMap[cat] = 0;
+      }
+      categoryMap[cat] += Number(item.price);
+    });
+
+    const result = Object.entries(categoryMap).map(([category, total]) => ({
+      category,
+      total,
+    }));
+
+    result.sort((a, b) => b.total - a.total);
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  }
+};
+
+export const getRisk = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const now = new Date();
+    
+    const startOfWeek = new Date(now);
+    const day = startOfWeek.getDay();
+    startOfWeek.setDate(startOfWeek.getDate() - day);
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    
+    const [weeklyExpenses, monthlyExpenses, budgetGoal] = await Promise.all([
+      Budget.find({ userId, date: { $gte: startOfWeek, $lte: now } }),
+      Budget.find({ userId, date: { $gte: startOfMonth, $lte: now } }),
+      BudgetGoal.findOne({ userId }),
+    ]);
+
+    const sumPrices = (items) => items.reduce((sum, item) => sum + Number(item.price), 0);
+    const weeklySpent = sumPrices(weeklyExpenses);
+    const monthlySpent = sumPrices(monthlyExpenses);
+    
+    const weeklyBudget = budgetGoal?.weeklyBudget || 0;
+    const monthlyBudget = budgetGoal?.monthlyBudget || 0;
+    
+    const daysPassedInMonth = now.getDate();
+    const totalDaysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    const avgDailySpend = daysPassedInMonth > 0 ? monthlySpent / daysPassedInMonth : 0;
+    
+    const miscellaneousSpent = monthlyExpenses
+      .filter((item) => item.need === 'miscellaneous')
+      .reduce((sum, item) => sum + Number(item.price), 0);
+      
+    const miscRatio = monthlySpent > 0 ? miscellaneousSpent / monthlySpent : 0;
+    const transactionCount = monthlyExpenses.length;
+
+    const payload = {
+      weeklySpent,
+      monthlySpent,
+      weeklyBudget,
+      monthlyBudget,
+      daysPassed: daysPassedInMonth,
+      totalDays: totalDaysInMonth,
+      avgDailySpend,
+      miscRatio,
+      transactionCount
+    };
+
+    const daysRemaining = totalDaysInMonth - daysPassedInMonth;
+    let reason = "Your spending looks normal.";
+    if (daysPassedInMonth > 0 && monthlyBudget > 0) {
+      const budgetUsedPercent = Math.round((monthlySpent / monthlyBudget) * 100);
+      reason = `${budgetUsedPercent}% of budget used with ${daysRemaining} days remaining`;
+    }
+
+    try {
+      const mlResponse = await axios.post('http://localhost:8000/predict-risk', payload);
+      res.status(200).json({
+        ...mlResponse.data,
+        reason
+      });
+    } catch (mlError) {
+      console.error('ML Risk Service Error:', mlError.message);
+      // Fallback response
+      res.status(200).json({ riskLevel: 'low', confidence: 0.0, reason: "Unable to reach AI service." });
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  }
+};
+
+export const getRecommendations = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+    const [monthlyExpenses, budgetGoal] = await Promise.all([
+      Budget.find({ userId, date: { $gte: startOfMonth, $lte: now } }),
+      BudgetGoal.findOne({ userId }),
+    ]);
+
+    const monthlySpent = monthlyExpenses.reduce((sum, item) => sum + Number(item.price), 0);
+    const monthlyBudget = budgetGoal?.monthlyBudget || 0;
+    const miscellaneousSpent = monthlyExpenses
+      .filter((item) => item.need === 'miscellaneous')
+      .reduce((sum, item) => sum + Number(item.price), 0);
+
+    const categoryMap = {};
+    monthlyExpenses.forEach((item) => {
+      const cat = item.category || 'Uncategorized';
+      categoryMap[cat] = (categoryMap[cat] || 0) + Number(item.price);
+    });
+
+    let highestCategory = null;
+    let highestCategoryAmount = 0;
+    Object.entries(categoryMap).forEach(([cat, amount]) => {
+      if (amount > highestCategoryAmount) {
+        highestCategoryAmount = amount;
+        highestCategory = cat;
+      }
+    });
+
+    const recommendations = [];
+
+    // Rule 1: High category spend
+    if (highestCategory && monthlySpent > 0) {
+      const catRatio = highestCategoryAmount / monthlySpent;
+      if (catRatio > 0.3) {
+        recommendations.push({
+          message: `${highestCategory} spending is ${Math.round(catRatio * 100)}% of your total. Reducing some weekly orders can save approx ₹${Math.round(highestCategoryAmount * 0.2)}.`,
+          type: 'insight'
+        });
+      }
+    }
+
+    // Rule 2: Budget closeness
+    if (monthlyBudget > 0) {
+      if (monthlySpent > monthlyBudget) {
+        recommendations.push({
+          message: 'You have exceeded your monthly budget! Try to minimize any further expenses.',
+          type: 'warning'
+        });
+      } else if (monthlySpent > 0.8 * monthlyBudget) {
+        recommendations.push({
+          message: 'You are close to your monthly budget. Limit miscellaneous expenses.',
+          type: 'warning'
+        });
+      }
+    }
+
+    // Rule 3: Misc ratio
+    if (monthlySpent > 0 && (miscellaneousSpent / monthlySpent) > 0.4) {
+      recommendations.push({
+        message: 'Miscellaneous expenses make up a large portion of your spending. Review them to find savings.',
+        type: 'tip'
+      });
+    }
+
+    if (recommendations.length === 0) {
+      recommendations.push({
+        message: 'Your spending looks healthy and balanced. Keep it up!',
+        type: 'insight'
+      });
+    }
+
+    res.status(200).json(recommendations);
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Server Error');

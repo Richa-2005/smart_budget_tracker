@@ -1,5 +1,6 @@
 import Budget from '../model/budget.model.js';
 import mongoose from 'mongoose';
+import axios from 'axios';
 
 export const getBudget = async (req, res) => {
   try {
@@ -31,7 +32,7 @@ export const postBudget = async (req, res) => {
   try {
     const { date } = req.params;
     const userId = req.user.userId;
-    const { price, description, need } = req.body;
+    const { price, description, need, category, mlPredicted, categoryConfidence, needConfidence } = req.body;
 
     if (!price || !description || !need) {
       return res.status(400).json({ message: 'Please provide all fields' });
@@ -51,6 +52,10 @@ export const postBudget = async (req, res) => {
       price,
       description,
       need: normalizedNeed,
+      category: category || "Uncategorized",
+      mlPredicted: mlPredicted || false,
+      categoryConfidence: categoryConfidence || 0,
+      needConfidence: needConfidence || 0,
     });
 
     res.status(201).json({
@@ -85,6 +90,39 @@ export const deleteBudget = async (req, res) => {
       message: 'Expenditure deleted successfully.',
       data: deletedBudget,
     });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
+export const predictExpense = async (req, res) => {
+  try {
+    const { description, price } = req.body;
+    
+    if (!description || !price) {
+      return res.status(400).json({ message: 'Description and price are required' });
+    }
+
+    // Call FastAPI ML service
+    try {
+      const mlResponse = await axios.post('http://localhost:8000/predict-expense', {
+        description,
+        amount: price
+      });
+      return res.status(200).json(mlResponse.data);
+    } catch (mlError) {
+      console.error('ML Service Error:', mlError.message);
+      // Fallback response
+      return res.status(200).json({ 
+        category: "Uncategorized", 
+        need: "manual", 
+        mlFailed: true,
+        categoryConfidence: 0,
+        needConfidence: 0,
+        keywords: []
+      });
+    }
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
